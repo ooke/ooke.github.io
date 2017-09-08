@@ -140,6 +140,9 @@ function a_to_6word(h) {
 }
 
 var password_last_changed = new Date().getTime();
+var selected_id = '';
+var selected_border_style = "2px solid #337ab7";
+var copied_border_style = "2px solid green";
 
 function now_changed() {
     password_last_changed = new Date().getTime();
@@ -235,6 +238,7 @@ function result_show() {
     document.getElementById('resb').style.color = "#000";
     document.getElementById('resd').style.color = "#000";
     black_color = document.getElementById('resn').style.color;
+    document.getElementById('show_hide').textContent = "hide";
 }
 
 function result_hide() {
@@ -243,6 +247,7 @@ function result_hide() {
     document.getElementById('resx').style.color = "#fff";
     document.getElementById('resb').style.color = "#fff";
     document.getElementById('resd').style.color = "#fff";
+    document.getElementById('show_hide').textContent = "show";
 }
 
 function result_toggle() {
@@ -277,6 +282,7 @@ function secret_toggle() {
 function hide_all() {
     secret_hide();
     result_hide();
+    reset_selected();
 }
 
 function remove_selection() {
@@ -307,9 +313,62 @@ function clear_passwords_after_timeout() {
     }
 }
 
+function reset_selected() {
+    document.getElementById('resn').style.border = '';
+    document.getElementById('resm').style.border = '';
+    document.getElementById('resx').style.border = '';
+    document.getElementById('resb').style.border = '';
+    document.getElementById('resd').style.border = '';
+    selected_id = '';
+    document.getElementById('copy_btn').textContent = "copy selected";
+}
+
 function deselect_obj(o) {
     o.selectionStart = o.selectionEnd;
 }
 
+function store_selected(id) {
+    reset_selected();
+    selected_id = id;
+    document.getElementById(id).style.border = selected_border_style;
+}
+  
+function copy_hidden(text) {
+    if (document.queryCommandSupported('copy') == true) {
+        var textArea = document.createElement("textarea");
+        textArea.style.position = "fixed";
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.background  ="transparent";
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        remove_selection();
+        return true;
+    }
+    else{
+        console.log("Copy command is not supported!");
+        return false;
+    }
+}
+
+function copy_selected() {
+    if (selected_id != '') {
+        copy_content(selected_id);
+    }
+}
+
+function copy_content(id) {
+    var e = document.getElementById(id);
+    if (e.innerHTML != '') {
+        if (copy_hidden(e.innerHTML) == true) {
+            document.getElementById('copy_btn').textContent = "! COPIED !";
+            e.style.border = copied_border_style;
+        }
+    }
+}
+ 
 window.setInterval(clear_passwords_after_timeout, 10000);
 document.getElementById("seed").focus();
