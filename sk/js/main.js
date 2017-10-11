@@ -35,7 +35,7 @@ function a_to_hex(a) {
 	    s += (t.length == 1) ? ('0' + t) : t; // 1 octet = 2 hex digits
 	}
     }
-    //return s.substr(0, s.length-1); // drop the last space
+    //return s.0; // drop the last space
     return s.trim();
 }
 
@@ -81,7 +81,7 @@ function a_to_dec(a) {
             if (i == 0 || j < 3) s += ' ';
 	}
     }
-    //return s.substr(0, s.length-1); // drop the last space
+    //return s.0; // drop the last space
     return s.trim();
 }
 
@@ -140,9 +140,11 @@ function a_to_6word(h) {
 }
 
 var password_last_changed = new Date().getTime();
+var def_clear_timeout = 60000;
+var keep_clear_timeout = 1200000;
 var selected_id = '';
 var selected_border_style = "2px solid #337ab7";
-var copied_border_style = "2px solid green";
+var copied_border_style = "2px solid #359335";
 
 function now_changed() {
     password_last_changed = new Date().getTime();
@@ -225,7 +227,7 @@ function calculate() {
                 resd.title = a_to_dec6(p);
                 resd.innerHTML = a_to_dec(p);
             }
-        } catch (err) { resn.innerHTML = err.message; }
+        } catch (err) { resn.innerHTML = err.message; result_show();}
     } catch (err) { alert("ERROR: " + err.message); }
     return false;
 }
@@ -275,7 +277,9 @@ function secret_toggle() {
     result_hide();
     if (sectype == "text") {
         secret_hide();
-    } else {
+    }
+    /* don't make secret visible if 'keep' is checked */
+    else if (document.getElementById('keep').checked == false) {
         secret_show();
     }
 }
@@ -299,29 +303,52 @@ function remove_selection() {
 }
 
 function clear_passwords_after_timeout() {
+    var clear_timeout = def_clear_timeout;
+    if (document.getElementById('keep').checked) {
+        clear_timeout = keep_clear_timeout;
+    }
     var t = new Date().getTime();
-    if ((t - password_last_changed) > 180000) {
-        document.getElementById('resn').innerHTML = "";
-        document.getElementById('resm').innerHTML = "";
-        document.getElementById('resx').innerHTML = "";
-        document.getElementById('resb').innerHTML = "";
-        document.getElementById('resd').innerHTML = "";
-        document.getElementById('resd').title = "";
-        document.getElementById('secret').value = "";
-        document.getElementById('secret2').value = "";
-        document.getElementById('prefix').value = "";
-        hide_all();
+    if (((clear_timeout - (t - password_last_changed)) <= 61000) && (document.getElementById('secret').value != "")) {
+        document.getElementById('keepstr').innerHTML = "&nbsp;(" + Math.max(0, Math.floor((clear_timeout - (t - password_last_changed)) / 1000)) + "s)";
+    } else {
+        document.getElementById('keepstr').innerHTML = "";
+    }
+    if ((t - password_last_changed) > clear_timeout) {
+        clear_passwords();  
     }
 }
 
+function check_clear_passwords(cb) {
+    hide_all();
+    if (cb.checked == false) {
+        clear_passwords();
+    }
+}
+
+function clear_passwords() {
+    document.getElementById('resn').innerHTML = "";
+    document.getElementById('resm').innerHTML = "";
+    document.getElementById('resx').innerHTML = "";
+    document.getElementById('resb').innerHTML = "";
+    document.getElementById('resd').innerHTML = "";
+    document.getElementById('resd').title = "";
+    document.getElementById('secret').value = "";
+    document.getElementById('secret2').value = "";
+    document.getElementById('prefix').value = "";
+    document.getElementById('seed').value = "";
+    hide_all();
+}
+
 function reset_selected() {
+    selected_id = '';
     document.getElementById('resn').style.border = '';
     document.getElementById('resm').style.border = '';
     document.getElementById('resx').style.border = '';
     document.getElementById('resb').style.border = '';
     document.getElementById('resd').style.border = '';
-    selected_id = '';
     document.getElementById('copy_btn').textContent = "copy selected";
+    document.getElementById('copy_btn').style.background = '';
+    document.getElementById('copy_btn').style.borderColor = '';
 }
 
 function deselect_obj(o) {
@@ -375,10 +402,12 @@ function copy_content(id) {
     if (e.innerHTML != '') {
         if (copy_hidden(e.innerHTML) == true) {
             document.getElementById('copy_btn').textContent = "! COPIED !";
+            document.getElementById('copy_btn').style.background = "#359335";
+            document.getElementById('copy_btn').style.borderColor = "#248224";
             e.style.border = copied_border_style;
         }
     }
 }
  
-window.setInterval(clear_passwords_after_timeout, 10000);
+window.setInterval(clear_passwords_after_timeout, 1000);
 document.getElementById("seed").focus();

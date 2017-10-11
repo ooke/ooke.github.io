@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>PasS/KEY</title>
+    <title>LesS/KEY &bull; S/KEY based passwort management</title>
 
 
     <!--[if lt IE 9]>
@@ -56,7 +56,7 @@
       <fieldset>
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="seq">seq&nbsp;#</label>
-          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-4">
+          <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4">
             <input id="seq" name="seq" placeholder="#" class="form-control input-md"
                    required="" value="99" onclick="deselect_obj(this)"
                    onchange="now_changed()" onfocus="now_changed()" oninput="now_changed()"
@@ -69,7 +69,7 @@
                  >&nbsp;&#x21B1;&nbsp;</div>
           </div>
           <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3">
-            <a href="https://github.com/ooke/passkey" title="Source code repository.">GitHub</a>
+            <a href="https://github.com/ooke/lesskey" title="Source code repository.">GitHub</a>
           </div>
         </div>
 
@@ -83,7 +83,7 @@
                    onchange="now_changed()" onfocus="now_changed()" oninput="now_changed()"/>
           </div>
           <div class="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <input id="prefix" name="prefix" placeholder="key prefix"
+            <input id="prefix" name="prefix" placeholder="prefix (optional)"
                    class="form-control input-md" type="password"
                    onchange="now_changed()" onfocus="now_changed()" oninput="now_changed()"/>
           </div>
@@ -101,10 +101,13 @@
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="secret2">&nbsp;</label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10">
+          <div class="col-lg-2 col-md-6 col-sm-8 col-xs-6">
             <input id="secret2" name="secret2" placeholder="verify password (optional)" value=""
                    class="form-control input-md" type="password"
                    onchange="now_changed()" onfocus="now_changed()" oninput="now_changed()"/>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 checkbox">
+            <label title="increase clearance timeout"><input id="keep" type="checkbox" autocomplete="off" onclick="check_clear_passwords(this)">keep<span id="keepstr"></span></input></label>
           </div>
         </div>
 
@@ -121,27 +124,27 @@
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resn"
                  onclick="result_toggle()">key</label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resn" onclick="store_selected('resn')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resn" onclick="store_selected('resn')"  class="form-control input-md" style="color: #fff;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resm">&nbsp;</label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resm" onclick="store_selected('resm')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resm" onclick="store_selected('resm')"  class="form-control input-md" style="color: #fff;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resx"><em>hex</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resx" onclick="store_selected('resx')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resx" onclick="store_selected('resx')"  class="form-control input-md" style="color: #fff;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resb"><em>b64</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resb" onclick="store_selected('resb')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resb" onclick="store_selected('resb')"  class="form-control input-md" style="color: #fff;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resd"><em>dec</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resd" onclick="store_selected('resd')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resd" onclick="store_selected('resd')"  class="form-control input-md" style="color: #fff;"></div></div>
         </div>
  
         <div class="form-group">
