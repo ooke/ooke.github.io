@@ -88,7 +88,7 @@
           </div>
           <div class="col-lg-3 col-md-4 col-sm-3 col-xs-4">
             <input id="seed" name="seed" placeholder="key name" required="" class="form-control input-md" type="text"
-                   autocomplete="off" autocapitalize="none" autocorrect="off"
+                   autocomplete="off" autocapitalize="none" autocorrect="off" tabindex="1"
                    style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
           </div>
@@ -102,12 +102,12 @@
                  title="click to clear all input fields" onclick="clear_passwords()">type</label>
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">
             <input id="prefix" name="prefix" placeholder="prefix (optional)"
-                   class="form-control input-md" type="password"
+                   class="form-control input-md" type="password" tabindex="2"
                    style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
           </div>
           <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
-            <select id="ptype" name="ptype" placeholder="type"
+            <select id="ptype" name="ptype" placeholder="type" tabindex="3"
                     class="form-control input-md" type="password"
                     style="font-family: 'monospace';"
                     onchange="now_changed()">
@@ -129,7 +129,7 @@
                  onclick="secret_toggle()">master</label>
           <div class="col-lg-5 col-md-7 col-sm-7 col-xs-7">
             <input id="secret" name="secret" placeholder="your password" required=""
-                   class="form-control input-md" type="password" value=""
+                   class="form-control input-md" type="password" value="" tabindex="4"
                    autocomplete="off" autocapitalize="none" autocorrect="off"
                    style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()" onclick="deselect_obj(this)"/>
@@ -143,7 +143,7 @@
           <label class="col-lg-3 col-md-2 col-sm-2 col-xs-2 control-label" for="secret2">&nbsp;</label>
           <div class="col-lg-5 col-md-7 col-sm-7 col-xs-7">
             <input id="secret2" name="secret2" placeholder="verify password (optional)" value=""
-                   class="form-control input-md" type="password"
+                   class="form-control input-md" type="password" tabindex="5"
                    autocomplete="off" autocapitalize="none" autocorrect="off"
                    style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
@@ -172,9 +172,9 @@
           <label class="col-lg-3 col-md-2 col-sm-2 col-xs-2 control-label" for="rtt" title="click to reset the test" onclick="test_reset()">test</label>
           <div class="col-lg-5 col-md-7 col-sm-7 col-xs-7">
             <input id="test" name="test" placeholder="test the generated key (optional)" value=""
-                   class="form-control input-md" type="password"
+                   class="form-control input-md" type="text" tabindex="6"
                    autocomplete="off" autocapitalize="none" autocorrect="off"
-                   style="font-family: 'monospace';"
+                   style="font-family: 'password;"
                    onchange="test_password()" oninput="test_password()"/>
           </div>
           <div class="col-lg-2 col-md-3 col-sm-2 col-xs-2 checkbox">
