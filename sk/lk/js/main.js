@@ -246,6 +246,7 @@ function generate() {
         var res = document.getElementById('res');
         res.innerHTML = "generated password";
         res.title = "";
+        result_hide();
 
         try {
             var pass = document.getElementById('secret');
