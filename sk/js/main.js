@@ -244,7 +244,7 @@ function generate() {
     now_changed();
     try {
         var res = document.getElementById('res');
-        res.innerHTML = "generated password";
+        res.innerHTML = "";
         res.title = "";
         result_hide();
 
@@ -603,3 +603,4 @@ document.getElementById("seed").focus();
 document.getElementById('copy_btn').setAttribute('disabled', 'disabled');
 document.getElementById('show_hide').setAttribute('disabled', 'disabled');
 test_reset();
+document.getElementById('res').innerHTML = "";
