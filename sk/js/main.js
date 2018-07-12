@@ -244,7 +244,7 @@ function generate() {
     now_changed();
     try {
         var res = document.getElementById('res');
-        res.innerHTML = "&nbsp;&nbsp;&nbsp;";
+        res.innerHTML = "generated password";
         res.title = "";
 
         try {
