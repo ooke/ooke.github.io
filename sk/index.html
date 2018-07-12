@@ -79,6 +79,8 @@
         <div class="form-group">
           <label class="col-lg-3 col-md-2 col-sm-2 col-xs-2 control-label"
                  title="click to open this page in a new window"
+                 onclick="window.open(window.location.href, '_blank', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400,height=600');"
+                 oncontextmenu="window.open(window.prompt('URL:', window.location.href) || window.location.href, '_blank', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=600,height=400');"
                  >id</label>
           <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
             <input id="seq" name="seq" placeholder="#" class="form-control input-md"
