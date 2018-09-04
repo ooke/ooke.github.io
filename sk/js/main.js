@@ -419,18 +419,11 @@ function button_clear() {
 }
 
 function resize_input_fields() {
-    if ($(window).width() <= 630) {
-        $(".flarge").removeClass("input-sm");
-        $(".flarge").removeClass("input-md");
-        $(".flarge").removeClass("input-lg");
-        $(".flarge").addClass("input-sm");
-    } else if ($(window).width() <= 1014) {
-        $(".flarge").removeClass("input-sm");
+    if ($(window).width() <= 1014) {
         $(".flarge").removeClass("input-md");
         $(".flarge").removeClass("input-lg");
         $(".flarge").addClass("input-md");
     } else if ($(window).width() > 1014) {
-        $(".flarge").removeClass("input-sm");
         $(".flarge").removeClass("input-md");
         $(".flarge").removeClass("input-lg");
         $(".flarge").addClass("input-lg");
