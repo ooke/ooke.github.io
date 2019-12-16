@@ -167,6 +167,10 @@ function removeStored (data) {
     delete fakeLocalStorage[data];
 }
 
+function dequota (data) {
+    return data.replace(/^["']*/, '').replace(/["']*$/, '');
+}
+
 var password_last_changed = new Date().getTime();
 var def_clear_timeout = 60000;
 var keep_clear_timeout = 1200000;
@@ -378,10 +382,10 @@ function button_show() {
     var fpassword = document.getElementById("fpassword");
     var ftest = document.getElementById("ftest");
     reset_timeout();
-    if (fpassword.style.fontFamily == default_fontfamily
-        || fmaster.style.fontFamily == default_fontfamily
+    if (dequota(fpassword.style.fontFamily) == default_fontfamily
+        || dequota(fmaster.style.fontFamily) == default_fontfamily
         || fmaster.type == "text"
-        || ftest.style.fontFamily == default_fontfamily)
+        || dequota(ftest.style.fontFamily) == default_fontfamily)
     {
         fmaster.style.fontFamily = secure_fontfamily;
         fmaster.type = "password";
@@ -406,7 +410,9 @@ function button_show_master() {
     var fpassword = document.getElementById("fpassword");
     var ftest = document.getElementById("ftest");
     reset_timeout();
-    if (fpassword.style.fontFamily == default_fontfamily || fmaster.style.fontFamily == default_fontfamily || fmaster.type == "text") {
+    if (dequota(fpassword.style.fontFamily) == default_fontfamily
+        || dequota(fmaster.style.fontFamily) == default_fontfamily
+        || fmaster.type == "text") {
         fmaster.style.fontFamily = secure_fontfamily;
         fmaster.type = "password";
         fpassword.style.fontFamily = secure_fontfamily;
