@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>LesS/KEY &bull; S/KEY based passwort management</title>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!--  -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-title" content="LesS/KEY">
+    <meta name="application-name" content="LesS/KEY">
+    <meta name="theme-color" content="#004ba0">
+    <!--  -->
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <style>
+      body {
+        overflow-x: hidden;
+        margin: 2em;
+      }
+      @font-face {
+        font-family: 'password';
+        src: url('fonts/password.eot');
+        src: url('fonts/password.eot') format('embedded-opentype'),
+             url('fonts/password.woff2') format('woff2'),
+             url('fonts/password.woff') format('woff'),
+             url('fonts/password.ttf') format('truetype'),
+             url('fonts/password.svg#password') format('svg');
+      }
+      .helppara {
+          background: white;
+          border: none;
+          padding: 0;
+      }
+      @media (max-width: 800px) {
+          .finput {
+              font-size: 0.95em;
+          }
+          .helppara {
+              font-size: 0.95em;
+          }
+          .fbutton {
+              font-size: 0.95em;
+          }
+      }
+      .fbutton {
+        margin: 8px 0px 0px 0px;
+      }
+      .finput {
+        border: 0;
+        box-shadow: none;
+        font-family: 'Space Mono', 'monospace'; 
+      }
+      .finput::-webkit-input-placeholder { font-family: 'Space Mono', 'monospace'; }
+      .finput::-moz-placeholder { font-family: 'Space Mono', 'monospace'; }
+      .finput:-webkit-input-placeholder { font-family: 'Space Mono', 'monospace'; }
+      .finput:-moz-placeholder { font-family: 'Space Mono', 'monospace'; }
+      .fpassword {
+        font-family: 'password';
+      }
+      .flarge { }
+    </style>
+  </head>
+  <body>
+    <form id="form" class="form-horizontal" method="post" action="https://127.0.0.1:0/"
+          onsubmin="changed()">
+      <fieldset>
+        <div class="form-group">
+          <input class="form-control input-md finput flarge"
+                 name="fname" id="fname" tabindex="1" placeholder="name of the password"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 oninput="reset_timeout()" onfocus="set_last_focus('fpassword')" onchange="changed()" onblur="changed()"
+                 title="Name of the password with specifig format, description at bottom."/>
+        </div>
+        <div class="form-group">
+          <input class="form-control input-md finput fpassword flarge" type="password"
+                 name="fmaster" id="fmaster" tabindex="2" placeholder="master password"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 oninput="changed()" onchange="changed()" onfocus="set_last_focus('fmaster')"
+                 title="Enter here your master password, it can be any string, we have here no policies for the master password. On pressing enter or tab, the focus will move to the generated password field."/>
+        </div>
+        <div class="form-group">
+          <input class="form-control input-md finput fpassword flarge"
+                 name="fpassword" id="fpassword" tabindex="3" placeholder="generated password"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 oninput="changed()" onchange="changed()" onfocus="set_last_focus('fpassword')"
+                 title="This is the generated password, you can copy and paste it some where or press show button and try to memorize it. If you press enter, then the generated password will be used as next master password for a new name. With tab key you can move the focus to test field and check, if you have remembered the generated password correctly." />
+        </div>
+        <div class="form-group">
+          <input class="form-control input-md finput fpassword flarge"
+                 name="ftest" id="ftest" tabindex="4" placeholder="test your generated password"
+                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                 oninput="testchanged()" onchange="testchanged()" onfocus="set_last_focus('ftest')"
+                 title="Here you can test whether you have remembered the password correctly, simply type it and press enter. If the test field was cleared, than you have typed the password correctly, otherwise it will stay as it is and you can click on the show button to find the error." />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary fbutton" type="button" name="show" id="show" tabindex="5"
+                  onclick="button_show()"
+                  title="Press left mouse key on this button to show the generated password and with the right mouse key you can see the master password in clear text.">show</button>
+          <button class="btn btn-primary fbutton" type="button" name="copy" id="copy" tabindex="6"
+                  onclick="button_copy()">copy</button>
+          <button class="btn btn-primary fbutton" type="button" name="switch" id="switch" tabindex="7"
+                  onclick="button_switch()">switch</button>
+          <button class="btn btn-primary fbutton" type="button" name="store" id="store" tabindex="8"
+                  onclick="button_store()">store</button>
+          <button class="btn btn-primary fbutton" type="button" name="keep" id="keep" tabindex="9"
+                  onclick="button_keep()">keep</button>
+          <button class="btn btn-primary fbutton" type="button" name="clear" id="clear" tabindex="10"
+                  oncontextmenu="window.open(window.prompt('URL:', window.location.href) || window.location.href, '_blank', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=600,height=400'); return false;"
+                  onclick="button_clear()">clear</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <div class="helppara">
+      <b>Security tipps:</b>
+      <ol>
+        <li>Use modes R or N without length whenever possible</li>
+        <li>Try to use all generated passwords by heart</li>
+        <li>If site have specific requirements, use prefix to meet the requirements and the R mode</li>
+        <li>If site has maximal length limits, use mode B, with prefix if required</li>
+      </ol>
+    </div>
+
+    <br/>
+    <pre class="helppara"><b>Name of the password should be specified as follows:</b>
+
+[prefix] &lt;name&gt; [length]&lt;mode&gt; &lt;seq&gt;
+
+<b>Samples:</b>
+     amazon R 99       <i>(simple name)</i>
+     amazon4 R 99      <i>(more unique)</i>
+     amazon4 8B 99     <i>(8 characters)</i>
+     @T amazon4 8B 99  <i>(with "@T" prefix)</i>
+
+The name can be simply entered as string without
+spaces, default mode and seq will be added
+automatically. On pressing enter or tab, the focus
+will move to the master password field.
+
+<b>&lt;prefix&gt;</b>
+
+     Optional string which will be appended to the
+     generated password as it is. This string is
+     useful only to comply with meaningless policy
+     rules.
+
+<b>&lt;name&gt;</b>
+
+     The name to use for generating, all uppacase
+     X characters at the end will be replaced by a
+     random number. Use the numbers to make the
+     names more unique.
+
+<b>[length]</b>
+
+     Length is optional and specifies maximal
+     number of characters the password should
+     have.
+
+<b>&lt;mode&gt;</b>
+     The mode to use for generating:
+          <b>R</b>	regular password
+          <b>U</b>	uppercase only password
+          <b>N</b>	no spaces
+          <b>UN</b>	like N but in uppecase
+          <b>H</b>	password as hexadecimal string
+          <b>UH</b>	like H but in uppecase
+          <b>B</b>	password in base64 format
+          <b>D</b>	decimal format (digets only)
+
+<b>&lt;seq&gt;</b>
+     The S/Key sequence number, default is 99 and
+     should only be changed if you really understand
+     what you do.
+
+</pre>
+
+    </br>
+
+    <!--  -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--  -->
+    <!--  -->
+    <a class="github-button" href="https://github.com/ooke/lesskey" aria-label="source code repository">LesS/KEY</a>
+    <!--  -->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/dict.js"></script>
+    <script src="js/sha1.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
